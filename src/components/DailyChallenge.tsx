@@ -2,6 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useWorkouts } from "@/hooks/useWorkouts";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import { 
   Clock, 
   Flame, 
@@ -12,6 +15,41 @@ import {
 } from "lucide-react";
 
 export const DailyChallenge = () => {
+  const { dailyChallenge, completeChallenge } = useWorkouts();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleContinueBattle = () => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    
+    if (dailyChallenge) {
+      // Simulate completing the challenge
+      const randomTime = Math.floor(Math.random() * 600) + 300; // 5-15 minutes
+      completeChallenge(
+        dailyChallenge.id, 
+        randomTime, 
+        dailyChallenge.target_reps || undefined
+      );
+    }
+  };
+
+  if (!dailyChallenge) {
+    return null;
+  }
+
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'beginner': return 'bg-green-500';
+      case 'intermediate': return 'bg-yellow-500';  
+      case 'advanced': return 'bg-red-500';
+      case 'legendary': return 'bg-purple-500';
+      default: return 'bg-primary';
+    }
+  };
+
   return (
     <section className="py-20 px-6 bg-muted/20">
       <div className="max-w-7xl mx-auto">
@@ -40,34 +78,38 @@ export const DailyChallenge = () => {
                   </div>
                 </div>
                 <CardTitle className="spartan-title text-3xl text-foreground">
-                  300 SPARTAN GAUNTLET
+                  {dailyChallenge.title}
                 </CardTitle>
                 <p className="text-muted-foreground text-lg">
-                  Complete the legendary 300-rep warrior workout that forged the greatest fighters in history
+                  {dailyChallenge.description}
                 </p>
               </CardHeader>
 
               <CardContent className="p-0 space-y-6">
                 {/* Workout Details */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center">
-                    <Timer className="mr-2 h-5 w-5 text-primary" />
-                    <div>
-                      <div className="font-semibold">45 Minutes</div>
-                      <div className="text-sm text-muted-foreground">Duration</div>
+                  {dailyChallenge.target_duration && (
+                    <div className="flex items-center">
+                      <Timer className="mr-2 h-5 w-5 text-primary" />
+                      <div>
+                        <div className="font-semibold">{dailyChallenge.target_duration} min</div>
+                        <div className="text-sm text-muted-foreground">Duration</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center">
-                    <Target className="mr-2 h-5 w-5 text-accent" />
-                    <div>
-                      <div className="font-semibold">300 Reps</div>
-                      <div className="text-sm text-muted-foreground">Total</div>
+                  )}
+                  {dailyChallenge.target_reps && (
+                    <div className="flex items-center">
+                      <Target className="mr-2 h-5 w-5 text-accent" />
+                      <div>
+                        <div className="font-semibold">{dailyChallenge.target_reps}</div>
+                        <div className="text-sm text-muted-foreground">Total</div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="flex items-center">
                     <Flame className="mr-2 h-5 w-5 text-secondary" />
                     <div>
-                      <div className="font-semibold">Elite</div>
+                      <div className="font-semibold">{dailyChallenge.difficulty}</div>
                       <div className="text-sm text-muted-foreground">Difficulty</div>
                     </div>
                   </div>
@@ -89,9 +131,13 @@ export const DailyChallenge = () => {
                   <Progress value={62} className="h-2" />
                 </div>
 
-                <Button size="lg" className="w-full gradient-bronze text-lg py-6">
+                <Button 
+                  size="lg" 
+                  className="w-full gradient-bronze text-lg py-6"
+                  onClick={handleContinueBattle}
+                >
                   <Trophy className="mr-2 h-5 w-5" />
-                  CONTINUE BATTLE
+                  {!user ? 'SIGN IN TO BATTLE' : 'CONTINUE BATTLE'}
                 </Button>
               </CardContent>
             </div>

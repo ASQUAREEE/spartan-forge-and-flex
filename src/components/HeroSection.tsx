@@ -1,11 +1,46 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sword, Shield, Trophy } from "lucide-react";
+import { Sword, Shield, Trophy, User, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
+import { useNavigate } from "react-router-dom";
 import spartanHero from "@/assets/spartan-hero.jpg";
 
 export const HeroSection = () => {
+  const { user, signOut } = useAuth();
+  const { profile } = useProfile();
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Navigation */}
+      <div className="absolute top-6 right-6 z-20 flex items-center gap-4">
+        {user ? (
+          <div className="flex items-center gap-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-primary/20">
+            <div className="flex items-center gap-2 text-sm">
+              <User className="h-4 w-4 text-primary" />
+              <span className="text-foreground font-medium">
+                {profile?.display_name || user.email?.split('@')[0]}
+              </span>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={signOut}
+              className="border-primary/20 hover:bg-destructive hover:text-destructive-foreground"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={() => navigate('/auth')}
+            className="gradient-spartan"
+          >
+            Enter Arena
+          </Button>
+        )}
+      </div>
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img 

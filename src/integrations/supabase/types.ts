@@ -14,7 +14,178 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_challenges: {
+        Row: {
+          challenge_date: string | null
+          created_at: string | null
+          description: string | null
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          id: string
+          target_duration: number | null
+          target_reps: number | null
+          title: string
+        }
+        Insert: {
+          challenge_date?: string | null
+          created_at?: string | null
+          description?: string | null
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          id?: string
+          target_duration?: number | null
+          target_reps?: number | null
+          title: string
+        }
+        Update: {
+          challenge_date?: string | null
+          created_at?: string | null
+          description?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          id?: string
+          target_duration?: number | null
+          target_reps?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          current_streak: number | null
+          display_name: string | null
+          experience_points: number | null
+          id: string
+          rank_level: number | null
+          total_workouts: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_streak?: number | null
+          display_name?: string | null
+          experience_points?: number | null
+          id?: string
+          rank_level?: number | null
+          total_workouts?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          current_streak?: number | null
+          display_name?: string | null
+          experience_points?: number | null
+          id?: string
+          rank_level?: number | null
+          total_workouts?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_challenge_completions: {
+        Row: {
+          challenge_id: string
+          completed_at: string | null
+          completion_time_seconds: number | null
+          id: string
+          reps_completed: number | null
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          completed_at?: string | null
+          completion_time_seconds?: number | null
+          id?: string
+          reps_completed?: number | null
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          completed_at?: string | null
+          completion_time_seconds?: number | null
+          id?: string
+          reps_completed?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_challenge_completions_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "daily_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_workouts: {
+        Row: {
+          completed_at: string | null
+          duration_minutes: number | null
+          id: string
+          notes: string | null
+          user_id: string
+          workout_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          user_id: string
+          workout_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          user_id?: string
+          workout_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_workouts_workout_id_fkey"
+            columns: ["workout_id"]
+            isOneToOne: false
+            referencedRelation: "workouts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workouts: {
+        Row: {
+          category: Database["public"]["Enums"]["workout_category"]
+          created_at: string | null
+          description: string | null
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          duration_minutes: number | null
+          exercises: Json | null
+          id: string
+          title: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["workout_category"]
+          created_at?: string | null
+          description?: string | null
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          duration_minutes?: number | null
+          exercises?: Json | null
+          id?: string
+          title: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["workout_category"]
+          created_at?: string | null
+          description?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          duration_minutes?: number | null
+          exercises?: Json | null
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +194,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      difficulty_level: "beginner" | "intermediate" | "advanced" | "legendary"
+      workout_category:
+        | "strength"
+        | "cardio"
+        | "flexibility"
+        | "combat"
+        | "endurance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +327,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      difficulty_level: ["beginner", "intermediate", "advanced", "legendary"],
+      workout_category: [
+        "strength",
+        "cardio",
+        "flexibility",
+        "combat",
+        "endurance",
+      ],
+    },
   },
 } as const
