@@ -1,1 +1,29 @@
 project_id = "cblzhhqohkzhvrlacctr"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+
+[db]
+enabled = true
+port = 54322
+
+[studio]
+enabled = true
+port = 54323
+
+[ingest]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+port = 54325
+
+[auth]
+enabled = true
+port = 54326
+
+[functions.workout-recommendations]
+verify_jwt = true
