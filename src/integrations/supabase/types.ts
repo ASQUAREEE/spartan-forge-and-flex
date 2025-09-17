@@ -10,181 +10,140 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.4"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
-      daily_challenges: {
+      follows: {
         Row: {
-          challenge_date: string | null
           created_at: string | null
-          description: string | null
-          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          follower_id: string
+          following_id: string
           id: string
-          target_duration: number | null
-          target_reps: number | null
-          title: string
         }
         Insert: {
-          challenge_date?: string | null
           created_at?: string | null
-          description?: string | null
-          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          follower_id: string
+          following_id: string
           id?: string
-          target_duration?: number | null
-          target_reps?: number | null
-          title: string
         }
         Update: {
-          challenge_date?: string | null
           created_at?: string | null
-          description?: string | null
-          difficulty?: Database["public"]["Enums"]["difficulty_level"]
+          follower_id?: string
+          following_id?: string
           id?: string
-          target_duration?: number | null
-          target_reps?: number | null
-          title?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "follows_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follows_following_id_fkey"
+            columns: ["following_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string | null
-          current_streak: number | null
-          display_name: string | null
-          experience_points: number | null
+          email: string | null
+          full_name: string | null
           id: string
-          rank_level: number | null
-          total_workouts: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      tweet_likes: {
+        Row: {
+          created_at: string | null
+          id: string
+          tweet_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          tweet_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          tweet_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tweet_likes_tweet_id_fkey"
+            columns: ["tweet_id"]
+            isOneToOne: false
+            referencedRelation: "tweets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tweet_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tweets: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
           updated_at: string | null
           user_id: string
         }
         Insert: {
+          content: string
           created_at?: string | null
-          current_streak?: number | null
-          display_name?: string | null
-          experience_points?: number | null
           id?: string
-          rank_level?: number | null
-          total_workouts?: number | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
+          content?: string
           created_at?: string | null
-          current_streak?: number | null
-          display_name?: string | null
-          experience_points?: number | null
           id?: string
-          rank_level?: number | null
-          total_workouts?: number | null
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
-      }
-      user_challenge_completions: {
-        Row: {
-          challenge_id: string
-          completed_at: string | null
-          completion_time_seconds: number | null
-          id: string
-          reps_completed: number | null
-          user_id: string
-        }
-        Insert: {
-          challenge_id: string
-          completed_at?: string | null
-          completion_time_seconds?: number | null
-          id?: string
-          reps_completed?: number | null
-          user_id: string
-        }
-        Update: {
-          challenge_id?: string
-          completed_at?: string | null
-          completion_time_seconds?: number | null
-          id?: string
-          reps_completed?: number | null
-          user_id?: string
-        }
         Relationships: [
           {
-            foreignKeyName: "user_challenge_completions_challenge_id_fkey"
-            columns: ["challenge_id"]
+            foreignKeyName: "tweets_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "daily_challenges"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
-      }
-      user_workouts: {
-        Row: {
-          completed_at: string | null
-          duration_minutes: number | null
-          id: string
-          notes: string | null
-          user_id: string
-          workout_id: string
-        }
-        Insert: {
-          completed_at?: string | null
-          duration_minutes?: number | null
-          id?: string
-          notes?: string | null
-          user_id: string
-          workout_id: string
-        }
-        Update: {
-          completed_at?: string | null
-          duration_minutes?: number | null
-          id?: string
-          notes?: string | null
-          user_id?: string
-          workout_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_workouts_workout_id_fkey"
-            columns: ["workout_id"]
-            isOneToOne: false
-            referencedRelation: "workouts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      workouts: {
-        Row: {
-          category: Database["public"]["Enums"]["workout_category"]
-          created_at: string | null
-          description: string | null
-          difficulty: Database["public"]["Enums"]["difficulty_level"]
-          duration_minutes: number | null
-          exercises: Json | null
-          id: string
-          title: string
-        }
-        Insert: {
-          category: Database["public"]["Enums"]["workout_category"]
-          created_at?: string | null
-          description?: string | null
-          difficulty: Database["public"]["Enums"]["difficulty_level"]
-          duration_minutes?: number | null
-          exercises?: Json | null
-          id?: string
-          title: string
-        }
-        Update: {
-          category?: Database["public"]["Enums"]["workout_category"]
-          created_at?: string | null
-          description?: string | null
-          difficulty?: Database["public"]["Enums"]["difficulty_level"]
-          duration_minutes?: number | null
-          exercises?: Json | null
-          id?: string
-          title?: string
-        }
-        Relationships: []
       }
     }
     Views: {
@@ -194,13 +153,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      difficulty_level: "beginner" | "intermediate" | "advanced" | "legendary"
-      workout_category:
-        | "strength"
-        | "cardio"
-        | "flexibility"
-        | "combat"
-        | "endurance"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -327,15 +280,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      difficulty_level: ["beginner", "intermediate", "advanced", "legendary"],
-      workout_category: [
-        "strength",
-        "cardio",
-        "flexibility",
-        "combat",
-        "endurance",
-      ],
-    },
+    Enums: {},
   },
 } as const
