@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_challenges: {
+        Row: {
+          challenge_date: string
+          created_at: string | null
+          description: string | null
+          difficulty: string
+          id: string
+          target_duration: number | null
+          target_reps: number | null
+          title: string
+        }
+        Insert: {
+          challenge_date: string
+          created_at?: string | null
+          description?: string | null
+          difficulty: string
+          id?: string
+          target_duration?: number | null
+          target_reps?: number | null
+          title: string
+        }
+        Update: {
+          challenge_date?: string
+          created_at?: string | null
+          description?: string | null
+          difficulty?: string
+          id?: string
+          target_duration?: number | null
+          target_reps?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
       follows: {
         Row: {
           created_at: string | null
@@ -54,26 +87,44 @@ export type Database = {
         Row: {
           avatar_url: string | null
           created_at: string | null
+          current_streak: number | null
+          display_name: string | null
           email: string | null
+          experience_points: number | null
           full_name: string | null
           id: string
+          rank_level: number | null
+          total_workouts: number | null
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string | null
+          current_streak?: number | null
+          display_name?: string | null
           email?: string | null
+          experience_points?: number | null
           full_name?: string | null
           id: string
+          rank_level?: number | null
+          total_workouts?: number | null
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string | null
+          current_streak?: number | null
+          display_name?: string | null
           email?: string | null
+          experience_points?: number | null
           full_name?: string | null
           id?: string
+          rank_level?: number | null
+          total_workouts?: number | null
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -144,6 +195,96 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_challenge_completions: {
+        Row: {
+          challenge_id: string
+          completed_at: string | null
+          completion_time_seconds: number | null
+          id: string
+          reps_completed: number | null
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          completed_at?: string | null
+          completion_time_seconds?: number | null
+          id?: string
+          reps_completed?: number | null
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          completed_at?: string | null
+          completion_time_seconds?: number | null
+          id?: string
+          reps_completed?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_workouts: {
+        Row: {
+          completed_at: string | null
+          duration_minutes: number | null
+          id: string
+          notes: string | null
+          user_id: string
+          workout_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          user_id: string
+          workout_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          duration_minutes?: number | null
+          id?: string
+          notes?: string | null
+          user_id?: string
+          workout_id?: string
+        }
+        Relationships: []
+      }
+      workouts: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          difficulty: string
+          duration_minutes: number | null
+          exercises: Json | null
+          id: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          difficulty: string
+          duration_minutes?: number | null
+          exercises?: Json | null
+          id?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          difficulty?: string
+          duration_minutes?: number | null
+          exercises?: Json | null
+          id?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
