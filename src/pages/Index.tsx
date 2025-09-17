@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/HeroSection";
 import { WorkoutCategories } from "@/components/WorkoutCategories";
 import { DailyChallenge } from "@/components/DailyChallenge";
+import { WorkoutRecommendations } from "@/components/WorkoutRecommendations";
 import { StatsSection } from "@/components/StatsSection";
 
 const Index = () => {
@@ -9,6 +10,7 @@ const Index = () => {
       <HeroSection />
       <WorkoutCategories />
       <DailyChallenge />
+      <WorkoutRecommendations />
       <StatsSection />
     </div>
   );
