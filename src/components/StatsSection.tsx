@@ -1,98 +1,49 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useProfile } from "@/hooks/useProfile";
-import { useAuth } from "@/hooks/useAuth";
 import { 
   TrendingUp, 
   Flame, 
   Trophy, 
   Target,
   Clock,
-  Zap,
-  Crown
+  Zap
 } from "lucide-react";
 
 export const StatsSection = () => {
-  const { profile } = useProfile();
-  const { user } = useAuth();
-
-  const getRankName = (level: number) => {
-    if (level >= 10) return "Spartan Legend";
-    if (level >= 7) return "Spartan Elite";
-    if (level >= 5) return "Spartan Warrior";
-    if (level >= 3) return "Spartan Fighter";
-    return "Recruit";
-  };
-
-  const defaultStats = [
+  const stats = [
     {
       icon: Flame,
       title: "Current Streak",
-      value: "0",
+      value: "23",
       unit: "days",
-      progress: 0,
+      progress: 77,
       color: "text-primary"
     },
     {
-      icon: Crown,
+      icon: Trophy,
       title: "Rank",
-      value: "Recruit",
-      unit: "Level 1",
-      progress: 0,
+      value: "CENTURION",
+      unit: "Elite Tier",
+      progress: 65,
       color: "text-accent"
     },
     {
       icon: Target,
       title: "Workouts Completed",
-      value: "0",
+      value: "147",
       unit: "sessions",
-      progress: 0,
+      progress: 89,
       color: "text-secondary"
     },
     {
-      icon: Trophy,
-      title: "Experience Points",
-      value: "0",
-      unit: "XP",
-      progress: 0,
+      icon: Clock,
+      title: "Total Training Time",
+      value: "89",
+      unit: "hours",
+      progress: 45,
       color: "text-primary"
     }
   ];
-
-  const stats = user && profile ? [
-    {
-      icon: Flame,
-      title: "Current Streak",
-      value: profile.current_streak.toString(),
-      unit: "days",
-      progress: Math.min(profile.current_streak * 5, 100),
-      color: "text-primary"
-    },
-    {
-      icon: Crown,
-      title: "Rank",
-      value: getRankName(profile.rank_level),
-      unit: `Level ${profile.rank_level}`,
-      progress: (profile.rank_level / 10) * 100,
-      color: "text-accent"
-    },
-    {
-      icon: Target,
-      title: "Workouts Completed",
-      value: profile.total_workouts.toString(),
-      unit: "sessions",
-      progress: Math.min(profile.total_workouts * 2, 100),
-      color: "text-secondary"
-    },
-    {
-      icon: Trophy,
-      title: "Experience Points",
-      value: profile.experience_points.toString(),
-      unit: "XP",
-      progress: Math.min((profile.experience_points / 1000) * 100, 100),
-      color: "text-primary"
-    }
-  ] : defaultStats;
 
   return (
     <section className="py-20 px-6">
